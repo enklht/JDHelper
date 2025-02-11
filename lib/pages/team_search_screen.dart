@@ -11,9 +11,6 @@ class TeamSearchScreen extends StatefulWidget {
   _TeamSearchState createState() => _TeamSearchState();
 }
 
-Team rare = Team("ra-re", 2022, 3, "寸劇", [("客寄せ", "エイトリング"), ("拍手練習", "輪投げ")]);
-Team fukuro = Team("梟", 2022, 2, "寸劇", [("客寄せ", "バルーン"), ("拍手練習", "シガーボックス")]);
-
 class _TeamSearchState extends State<TeamSearchScreen> {
   bool isLoading = true;
   late List<Team> _allItemList;
@@ -63,56 +60,58 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       ),
       body: SizedBox(
         height: uiHeight,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: uiHeight * 0.1,
-                padding: EdgeInsets.symmetric(
-                  horizontal: uiWidth * 0.1,
-                ),
-                child: Center(
-                  child: TextField(
-                    onChanged: (inputKeyword) => runFilter(inputKeyword),
-                    decoration: const InputDecoration(
-                      labelText: "検索",
-                      suffixIcon: Icon(Icons.search),
-                    ),
+        child: Column(
+          children: [
+            Container(
+              height: uiHeight * 0.1,
+              padding: EdgeInsets.symmetric(
+                horizontal: uiWidth * 0.1,
+              ),
+              child: Center(
+                child: TextField(
+                  onChanged: (inputKeyword) => runFilter(inputKeyword),
+                  decoration: const InputDecoration(
+                    labelText: "検索",
+                    suffixIcon: Icon(Icons.search),
                   ),
                 ),
               ),
-              const Divider(),
+            ),
+            const Divider(),
+            if (isLoading)
               Container(
+                padding: const EdgeInsets.all(10),
+                width: 100,
+                height: 100,
+                child: const CircularProgressIndicator(),
+              )
+            else
+              SizedBox(
                 height: uiHeight * 0.8,
-                padding: EdgeInsets.only(
-                  right: uiWidth * 0.1,
-                  left: uiWidth * 0.1,
-                ),
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : ListView.builder(
-                        itemCount: _displayItemList.length,
-                        itemBuilder: (context, index) {
-                          final Team team = _displayItemList[index];
-                          return Card(
-                            child: ListTile(
-                              title: Text(team.name),
-                              subtitle: Text(team.year.toString()),
-                              onTap: () => {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        TeamDetail(team: team),
-                                  ),
-                                ),
-                              },
+                child: ListView.builder(
+                  itemCount: _displayItemList.length,
+                  itemBuilder: (context, index) {
+                    final Team team = _displayItemList[index];
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: uiWidth * 0.1),
+                      child: Card(
+                        child: ListTile(
+                          title: Text(team.name),
+                          subtitle: Text(team.year.toString()),
+                          onTap: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TeamDetail(team: team),
+                              ),
                             ),
-                          );
-                        },
+                          },
+                        ),
                       ),
+                    );
+                  },
+                ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js_interop';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:street_performance_helper/models/team.dart';
 
@@ -18,7 +18,7 @@ class TeamRepository {
 
       final res = await http.get(url);
       if (res.statusCode != 200) {
-        throw 'Failed to Load English Word Data.';
+        throw 'Failed to Load Data.';
       }
 
       final Map<String, dynamic> message =
@@ -27,21 +27,25 @@ class TeamRepository {
         throw 'Failed to fetch database.';
       }
 
-      final values = message['values'];
-      for (final value in values as List) {
-        final valueList = List<String>.from(value);
+      final List values = message['values'] as List;
+      for (final value in values) {
+        final valueList = List<String>.from(value as List);
         result.add(
           Team(
             valueList[0],
             int.parse(valueList[1]),
             int.parse(valueList[2]),
             valueList[3],
-            [],
+            valueList[4],
+            valueList.sublist(5).map((e) {
+              final List<String> splitted = e.split(':');
+              return (splitted[0], splitted[1]);
+            }).toList(),
           ),
         );
       }
     } catch (e) {
-      print(e); // エラーはログに出力して握りつぶす
+      debugPrint(e.toString()); // エラーはログに出力して握りつぶす
     }
     return result;
   }
