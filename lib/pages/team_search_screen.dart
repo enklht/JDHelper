@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:fuzzywuzzy/fuzzywuzzy.dart";
+import "package:street_performance_helper/models/team.dart";
+import "package:street_performance_helper/pages/team_detail_screen.dart";
 
 class TeamSearchScreen extends StatefulWidget {
   const TeamSearchScreen({super.key});
@@ -8,28 +10,20 @@ class TeamSearchScreen extends StatefulWidget {
   _TeamSearchState createState() => _TeamSearchState();
 }
 
+Team rare = Team("ra-re", 2022, 3, "寸劇", [("客寄せ", "エイトリング"), ("拍手練習", "輪投げ")]);
+Team fukuro = Team("梟", 2022, 2, "寸劇", [("客寄せ", "バルーン"), ("拍手練習", "シガーボックス")]);
+
 class _TeamSearchState extends State<TeamSearchScreen> {
-  final List<String> _allItemList = [
-    "raːre",
-    "raːre",
-    "raːre",
-    "5分前行動",
-    "梟",
-    "5分前行動",
-    "梟",
-    "5分前行動",
-    "raːre",
-    "5分前行動",
-    "梟",
-    "5分前行動",
-    "梟",
-    "5分前行動",
-    "梟",
+  final List<Team> _allItemList = [
+    rare,
+    fukuro,
+    rare,
   ];
-  List<String> _displayItemList = [];
+
+  List<Team> _displayItemList = [];
 
   void runFilter(String inputKeyword) {
-    List<String> results = [];
+    List<Team> results = [];
     if (inputKeyword.isEmpty) {
       results = _allItemList;
     } else {
@@ -37,6 +31,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
         query: inputKeyword,
         choices: _allItemList,
         cutoff: 50,
+        getter: (e) => e.name,
       ).map((e) => e.choice).toList();
     }
     setState(() {
@@ -90,10 +85,18 @@ class _TeamSearchState extends State<TeamSearchScreen> {
                 child: ListView.builder(
                   itemCount: _displayItemList.length,
                   itemBuilder: (context, index) {
+                    final Team team = _displayItemList[index];
                     return Card(
                       child: ListTile(
-                        title: Text(_displayItemList[index]),
-                        subtitle: Text(_displayItemList[index]),
+                        title: Text(team.name),
+                        subtitle: Text(team.year.toString()),
+                        onTap: () => {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TeamDetail(team: team),
+                            ),
+                          ),
+                        },
                       ),
                     );
                   },
