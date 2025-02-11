@@ -8,7 +8,7 @@ class TitleScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("大道芸検索アプリ（仮）"),
         leading: Icon(
-          Icons.donut_large_rounded,
+          Icons.donut_large,
           color: Theme.of(context).primaryColor,
         ),
       ),
@@ -18,7 +18,7 @@ class TitleScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TeamSearchScreen(),
+                builder: (context) => const TeamSearchScreen(),
               ),
             );
           },
