@@ -12,7 +12,7 @@ class TeamSearchScreen extends StatefulWidget {
 }
 
 class _TeamSearchState extends State<TeamSearchScreen> {
-  bool isLoading = true;
+  bool _isLoading = true;
   late List<Team> _allItemList;
   late List<Team> _displayItemList;
 
@@ -42,7 +42,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
   Future<void> fetchData() async {
     final List<Team> fetchedList = await TeamRepository().getTeamsFromApi();
     setState(() {
-      isLoading = false;
+      _isLoading = false;
       _allItemList = fetchedList;
       _displayItemList = fetchedList;
     });
@@ -78,7 +78,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
               ),
             ),
             const Divider(),
-            if (isLoading)
+            if (_isLoading)
               Container(
                 padding: const EdgeInsets.all(10),
                 width: 100,
