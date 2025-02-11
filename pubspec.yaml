@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   fuzzywuzzy: ^1.0.0
+  http: ^1.0.0
 
 dev_dependencies:
   flutter_test:

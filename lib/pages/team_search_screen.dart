@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:fuzzywuzzy/fuzzywuzzy.dart";
+import "package:street_performance_helper/data/load_teams.dart";
 import "package:street_performance_helper/models/team.dart";
 import "package:street_performance_helper/pages/team_detail_screen.dart";
 
@@ -14,13 +15,9 @@ Team rare = Team("ra-re", 2022, 3, "寸劇", [("客寄せ", "エイトリング"
 Team fukuro = Team("梟", 2022, 2, "寸劇", [("客寄せ", "バルーン"), ("拍手練習", "シガーボックス")]);
 
 class _TeamSearchState extends State<TeamSearchScreen> {
-  final List<Team> _allItemList = [
-    rare,
-    fukuro,
-    rare,
-  ];
-
-  List<Team> _displayItemList = [];
+  bool isLoading = true;
+  late List<Team> _allItemList;
+  late List<Team> _displayItemList;
 
   void runFilter(String inputKeyword) {
     List<Team> results = [];
@@ -42,7 +39,16 @@ class _TeamSearchState extends State<TeamSearchScreen> {
   @override
   void initState() {
     super.initState();
-    _displayItemList = _allItemList;
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final List<Team> fetchedList = await TeamRepository().getTeamsFromApi();
+    setState(() {
+      isLoading = false;
+      _allItemList = fetchedList;
+      _displayItemList = fetchedList;
+    });
   }
 
   @override
@@ -82,25 +88,28 @@ class _TeamSearchState extends State<TeamSearchScreen> {
                   right: uiWidth * 0.1,
                   left: uiWidth * 0.1,
                 ),
-                child: ListView.builder(
-                  itemCount: _displayItemList.length,
-                  itemBuilder: (context, index) {
-                    final Team team = _displayItemList[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(team.name),
-                        subtitle: Text(team.year.toString()),
-                        onTap: () => {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => TeamDetail(team: team),
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : ListView.builder(
+                        itemCount: _displayItemList.length,
+                        itemBuilder: (context, index) {
+                          final Team team = _displayItemList[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(team.name),
+                              subtitle: Text(team.year.toString()),
+                              onTap: () => {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TeamDetail(team: team),
+                                  ),
+                                ),
+                              },
                             ),
-                          ),
+                          );
                         },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
