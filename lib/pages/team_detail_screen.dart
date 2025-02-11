@@ -57,8 +57,22 @@ class TeamDetail extends StatelessWidget {
                 const SizedBox(height: 20),
                 DataTable(
                   columns: const [
-                    DataColumn(label: Text("パート")),
-                    DataColumn(label: Text("道具")),
+                    DataColumn(
+                      label: Text(
+                        "パート",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "道具",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                   rows: team.program
                       .map(
