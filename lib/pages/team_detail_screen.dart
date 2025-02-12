@@ -16,9 +16,9 @@ class TeamDetail extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             child: Column(
+              spacing: 20,
               children: [
                 const Text("基礎データ", style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 20),
                 DataTable(
                   headingRowHeight: 0,
                   columns: const [
@@ -52,9 +52,8 @@ class TeamDetail extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 const Text("構成", style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 10),
                 DataTable(
                   columns: const [
                     DataColumn(
