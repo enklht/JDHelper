@@ -46,7 +46,7 @@ class TitleScreen extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _createLinkButton(context, "チーム検索", const TeamSearchScreen()),
             const SizedBox(height: 20),
