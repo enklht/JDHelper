@@ -52,9 +52,9 @@ class TeamDetail extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 const Text("構成", style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 DataTable(
                   columns: const [
                     DataColumn(
