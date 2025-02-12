@@ -50,7 +50,7 @@ class TitleScreen extends StatelessWidget {
           children: [
             _createLinkButton(context, "チーム検索", const TeamSearchScreen()),
             const SizedBox(height: 20),
-            _createLinkButton(context, "技検索", const TeamSearchScreen()),
+            // _createLinkButton(context, "技検索", null),
           ],
         ),
       ),
