@@ -63,28 +63,47 @@ class _TeamSearchState extends State<TeamSearchScreen> {
         child: Column(
           children: [
             Container(
-              height: uiHeight * 0.1,
               padding: EdgeInsets.symmetric(
                 horizontal: uiWidth * 0.1,
               ),
               child: Center(
-                child: TextField(
-                  onChanged: (inputKeyword) => runFilter(inputKeyword),
-                  decoration: const InputDecoration(
-                    labelText: "検索",
-                    suffixIcon: Icon(Icons.search),
-                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (inputKeyword) => runFilter(inputKeyword),
+                        decoration: const InputDecoration(
+                          labelText: "検索",
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.filter_list),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SizedBox(
+                              height: uiHeight * 0.4,
+                              width: uiWidth,
+                              child: const SingleChildScrollView(
+                                child: Column(
+                                  children: [Text("for test")],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
             const Divider(),
             if (_isLoading)
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: 100,
-                height: 100,
-                child: const CircularProgressIndicator(),
-              )
+              const CircularProgressIndicator()
             else
               SizedBox(
                 height: uiHeight * 0.8,
