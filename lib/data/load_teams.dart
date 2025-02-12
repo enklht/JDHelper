@@ -33,11 +33,12 @@ class TeamRepository {
         result.add(
           Team(
             valueList[0],
-            int.parse(valueList[1]),
+            valueList[1],
             int.parse(valueList[2]),
-            valueList[3],
+            int.parse(valueList[3]),
             valueList[4],
-            valueList.sublist(5).map((e) {
+            valueList[5],
+            valueList.sublist(6).map((e) {
               final List<String> splitted = e.split(':');
               return (splitted[0], splitted[1]);
             }).toList(),

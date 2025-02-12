@@ -59,8 +59,8 @@ class _TeamSearchState extends State<TeamSearchScreen> {
     );
   }
 
-  void _runFilter({String inputKeyword = ""}) {
-    final String input = inputKeyword.isEmpty ? _inputKeyword : inputKeyword;
+  void _runFilter({String? inputKeyword}) {
+    final String input = inputKeyword ?? _inputKeyword;
     List<Team> results = _allItemList
         .where(
           (e) => _selectedYears.isEmpty || _selectedYears.contains(e.year),
@@ -79,11 +79,11 @@ class _TeamSearchState extends State<TeamSearchScreen> {
         query: input,
         choices: results,
         cutoff: 50,
-        getter: (e) => e.name,
+        getter: (e) => "${e.name}            ${e.pronounciation}",
       ).map((e) => e.choice).toList();
     }
     setState(() {
-      _inputKeyword = inputKeyword;
+      _inputKeyword = input;
       _displayItemList = results;
     });
   }
@@ -116,9 +116,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
     StateSetter setState,
   ) {
     return [
-      const SizedBox(height: 10),
       Text(title, style: const TextStyle(fontSize: 20)),
-      const SizedBox(height: 10),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Wrap(
@@ -149,6 +147,47 @@ class _TeamSearchState extends State<TeamSearchScreen> {
     ];
   }
 
+  void _showModal() {
+    showModalBottomSheet(
+      context: context,
+      constraints: const BoxConstraints(minWidth: double.infinity),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              child: SafeArea(
+                minimum: const EdgeInsets.all(20),
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    _createFilter(
+                      "年度",
+                      _allYears,
+                      _selectedYears,
+                      setState,
+                    ),
+                    _createFilter(
+                      "人数",
+                      _allMemberNums,
+                      _selectedMemberNums,
+                      setState,
+                    ),
+                    _createFilter(
+                      "種類",
+                      _allKinds,
+                      _selectedKinds,
+                      setState,
+                    ),
+                  ].fold([], (p, e) => p..addAll(e)),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _searchBar(BuildContext context, double uiWidth, double uiHeight) {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -169,45 +208,30 @@ class _TeamSearchState extends State<TeamSearchScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                constraints: const BoxConstraints.expand(),
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            _createFilter(
-                              "年度",
-                              _allYears,
-                              _selectedYears,
-                              setState,
-                            ),
-                            _createFilter(
-                              "人数",
-                              _allMemberNums,
-                              _selectedMemberNums,
-                              setState,
-                            ),
-                            _createFilter(
-                              "種類",
-                              _allKinds,
-                              _selectedKinds,
-                              setState,
-                            ),
-                          ].fold([], (p, e) => p..addAll(e)),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
+            onPressed: _showModal,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _teamSubtitle(BuildContext context, Team team) {
+    return Row(
+      spacing: 10,
+      children: [
+        Text(
+          "${team.year}年度",
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          "${team.memberNum}人",
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          team.kind,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 
@@ -222,8 +246,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
             child: Card(
               child: ListTile(
                 title: Text(team.name, overflow: TextOverflow.ellipsis),
-                subtitle:
-                    Text(team.year.toString(), overflow: TextOverflow.ellipsis),
+                subtitle: _teamSubtitle(context, team),
                 onTap: () => {
                   Navigator.of(context).push(
                     MaterialPageRoute(

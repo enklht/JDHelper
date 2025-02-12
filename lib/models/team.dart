@@ -1,5 +1,6 @@
 class Team {
   String name;
+  String pronounciation;
   int year;
   int memberNum;
   String kind;
@@ -8,6 +9,7 @@ class Team {
 
   Team(
     this.name,
+    this.pronounciation,
     this.year,
     this.memberNum,
     this.kind,
