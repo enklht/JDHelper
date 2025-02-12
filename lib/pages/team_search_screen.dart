@@ -48,6 +48,76 @@ class _TeamSearchState extends State<TeamSearchScreen> {
     });
   }
 
+  Widget _searchBar(BuildContext context, double uiWidth, double uiHeight) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: uiWidth * 0.1,
+      ),
+      child: Center(
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                onChanged: (inputKeyword) => runFilter(inputKeyword),
+                decoration: const InputDecoration(
+                  labelText: "検索",
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: uiHeight * 0.4,
+                      width: uiWidth,
+                      child: const SingleChildScrollView(
+                        child: Column(
+                          children: [Text("for test")],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _teamList(BuildContext context, double uiWidth, double uiHeight) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _displayItemList.length,
+        itemBuilder: (context, index) {
+          final Team team = _displayItemList[index];
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: uiWidth * 0.1),
+            child: Card(
+              child: ListTile(
+                title: Text(team.name),
+                subtitle: Text(team.year.toString()),
+                onTap: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TeamDetail(team: team),
+                    ),
+                  ),
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size uiSize = MediaQuery.of(context).size;
@@ -62,74 +132,12 @@ class _TeamSearchState extends State<TeamSearchScreen> {
         height: uiHeight,
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: uiWidth * 0.1,
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        onChanged: (inputKeyword) => runFilter(inputKeyword),
-                        decoration: const InputDecoration(
-                          labelText: "検索",
-                          prefixIcon: Icon(Icons.search),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.filter_list),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                              height: uiHeight * 0.4,
-                              width: uiWidth,
-                              child: const SingleChildScrollView(
-                                child: Column(
-                                  children: [Text("for test")],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            _searchBar(context, uiWidth, uiHeight),
             const Divider(),
             if (_isLoading)
               const CircularProgressIndicator()
             else
-              SizedBox(
-                height: uiHeight * 0.8,
-                child: ListView.builder(
-                  itemCount: _displayItemList.length,
-                  itemBuilder: (context, index) {
-                    final Team team = _displayItemList[index];
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: uiWidth * 0.1),
-                      child: Card(
-                        child: ListTile(
-                          title: Text(team.name),
-                          subtitle: Text(team.year.toString()),
-                          onTap: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => TeamDetail(team: team),
-                              ),
-                            ),
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              _teamList(context, uiWidth, uiHeight),
           ],
         ),
       ),
