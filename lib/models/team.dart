@@ -6,6 +6,9 @@ class Team {
   String kind;
   String youtubeLink;
   List<(String, String)> program;
+  String theme;
+  String characters;
+  String note;
 
   Team(
     this.name,
@@ -15,5 +18,8 @@ class Team {
     this.kind,
     this.youtubeLink,
     this.program,
+    this.theme,
+    this.characters,
+    this.note,
   );
 }

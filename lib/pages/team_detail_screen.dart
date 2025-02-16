@@ -50,6 +50,24 @@ class TeamDetail extends StatelessWidget {
                         DataCell(Text(team.kind)),
                       ],
                     ),
+                    DataRow(
+                      cells: [
+                        const DataCell(Text("テーマ")),
+                        DataCell(Text(team.theme)),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        const DataCell(Text("キャラクター")),
+                        DataCell(Text(team.characters)),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        const DataCell(Text("備考")),
+                        DataCell(Text(team.note)),
+                      ],
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),

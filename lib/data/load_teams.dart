@@ -21,21 +21,27 @@ class TeamRepository {
 
     return List.generate(
       teams.length,
-      (index) => Team(
-        teams[index].elementAtOrNull(0) ?? "",
-        teams[index].elementAtOrNull(index) ?? "",
-        int.tryParse(teams[index][2]) ?? 0,
-        int.tryParse(teams[index][3]) ?? 0,
-        teams[index].elementAtOrNull(4) ?? "",
-        teams[index].elementAtOrNull(5) ?? "",
-        (teams[index].elementAtOrNull(6) ?? "")
-            .split(",")
-            .where((e) => e.isNotEmpty)
-            .map((e) {
-          final List<String> splitted = e.split(":");
-          return (splitted[0], splitted[1]);
-        }).toList(),
-      ),
+      (index) {
+        final team = teams[index];
+        return Team(
+          team.elementAtOrNull(0) ?? "",
+          team.elementAtOrNull(index) ?? "",
+          int.tryParse(team[2]) ?? 0,
+          int.tryParse(team[3]) ?? 0,
+          team.elementAtOrNull(4) ?? "",
+          team.elementAtOrNull(5) ?? "",
+          (team.elementAtOrNull(6) ?? "")
+              .split(",")
+              .where((e) => e.isNotEmpty)
+              .map((e) {
+            final List<String> splitted = e.split(":");
+            return (splitted[0], splitted[1]);
+          }).toList(),
+          team.elementAtOrNull(7) ?? "",
+          team.elementAtOrNull(8) ?? "",
+          team.elementAtOrNull(9) ?? "",
+        );
+      },
     ).reversed.toList();
   }
 }
