@@ -35,37 +35,37 @@ class TeamDetail extends StatelessWidget {
                     DataRow(
                       cells: [
                         const DataCell(Text("年度")),
-                        DataCell(Text(team.year.toString())),
+                        DataCell(Text(team.year?.toString() ?? "不明")),
                       ],
                     ),
                     DataRow(
                       cells: [
                         const DataCell(Text("人数")),
-                        DataCell(Text(team.memberNum.toString())),
+                        DataCell(Text(team.memberNum?.toString() ?? "不明")),
                       ],
                     ),
                     DataRow(
                       cells: [
                         const DataCell(Text("種類")),
-                        DataCell(Text(team.kind)),
+                        DataCell(Text(team.kind ?? "不明")),
                       ],
                     ),
                     DataRow(
                       cells: [
                         const DataCell(Text("テーマ")),
-                        DataCell(Text(team.theme)),
+                        DataCell(Text(team.theme ?? "")),
                       ],
                     ),
                     DataRow(
                       cells: [
                         const DataCell(Text("キャラクター")),
-                        DataCell(Text(team.characters)),
+                        DataCell(Text(team.characters ?? "")),
                       ],
                     ),
                     DataRow(
                       cells: [
                         const DataCell(Text("備考")),
-                        DataCell(Text(team.note)),
+                        DataCell(Text(team.note ?? "")),
                       ],
                     ),
                   ],
@@ -92,15 +92,16 @@ class TeamDetail extends StatelessWidget {
                     ),
                   ],
                   rows: team.program
-                      .map(
-                        (e) => DataRow(
-                          cells: [
-                            DataCell(Text(e.$1)),
-                            DataCell(Text(e.$2)),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                          ?.map(
+                            (e) => DataRow(
+                              cells: [
+                                DataCell(Text(e.$1)),
+                                DataCell(Text(e.$2)),
+                              ],
+                            ),
+                          )
+                          .toList() ??
+                      [],
                 ),
               ],
             ),

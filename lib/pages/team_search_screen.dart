@@ -99,13 +99,19 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       _selectedYears = {};
       _selectedKinds = {};
 
-      _allYears = _allItemList.map((e) => e.year).toSet().toList();
+      _allYears =
+          _allItemList.map((e) => e.year).whereType<int>().toSet().toList();
       _allYears.sort();
 
-      _allMemberNums = _allItemList.map((e) => e.memberNum).toSet().toList();
+      _allMemberNums = _allItemList
+          .map((e) => e.memberNum!)
+          .whereType<int>()
+          .toSet()
+          .toList();
       _allMemberNums.sort();
 
-      _allKinds = _allItemList.map((e) => e.kind).toSet().toList();
+      _allKinds =
+          _allItemList.map((e) => e.kind!).whereType<String>().toSet().toList();
     });
   }
 
@@ -220,15 +226,15 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       spacing: 10,
       children: [
         Text(
-          "${team.year}年度",
+          team.year != null ? "${team.year}年度" : "年度不明",
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          "${team.memberNum}人",
+          team.memberNum != null ? "${team.memberNum}人" : "人数不明",
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          team.kind,
+          team.kind != null ? "${team.kind}年度" : "種類不明",
           overflow: TextOverflow.ellipsis,
         ),
       ],

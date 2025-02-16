@@ -1,14 +1,14 @@
 class Team {
   String name;
   String pronounciation;
-  int year;
-  int memberNum;
-  String kind;
-  String youtubeLink;
-  List<(String, String)> program;
-  String theme;
-  String characters;
-  String note;
+  int? year;
+  int? memberNum;
+  String? kind;
+  String? youtubeLink;
+  List<(String, String)>? program;
+  String? theme;
+  String? characters;
+  String? note;
 
   Team(
     this.name,
