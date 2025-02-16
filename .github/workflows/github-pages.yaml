@@ -36,7 +36,7 @@ jobs:
           echo "cresidential=${{ secrets.cresidential }}" >> .env
       - run: flutter --version
       - run: flutter pub get
-      - run: flutter build web --web-renderer html --base-href /${{ steps.version.outputs.repository }}/
+      - run: flutter build web --web-renderer html --base-href /${{ steps.version.outputs.repository }}/ --dart-define-from-file=.env
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
