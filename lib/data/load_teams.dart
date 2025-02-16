@@ -1,53 +1,38 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:gsheets/gsheets.dart';
 import 'package:street_performance_helper/models/team.dart';
 
+const _cresidentials = String.fromEnvironment("cresidential");
+const _spreadsheetId = String.fromEnvironment("spreadsheetId");
+
 class TeamRepository {
-  static const String spreadsSheetsUrl =
-      "1Vapku8W_-b3qfeAMK9l3uKoQw9feuebLHXSVFQdZJZQ";
-  static const String sheetName = "teams";
-  static const String apiKey = "AIzaSyBvxzB-UqLV7oWAURpwOa3fWwgDyf-J00c";
+  final _gsheets = GSheets(_cresidentials);
+  late Spreadsheet _spreadsheet;
+  late Worksheet? _teamsheet;
+
+  Future<void> init() async {
+    _spreadsheet = await _gsheets.spreadsheet(_spreadsheetId);
+    _teamsheet = _spreadsheet.worksheetByTitle("teams");
+  }
 
   Future<List<Team>> getTeamsFromApi() async {
-    final List<Team> result = [];
-    try {
-      final url = Uri.parse(
-        "https://sheets.googleapis.com/v4/spreadsheets/$spreadsSheetsUrl/values/$sheetName?key=$apiKey",
-      );
+    await init();
 
-      final res = await http.get(url);
-      if (res.statusCode != 200) {
-        throw 'Failed to Load Data.';
-      }
+    final teams = await _teamsheet!.values.allRows();
 
-      final Map<String, dynamic> message =
-          jsonDecode(res.body) as Map<String, dynamic>;
-      if (message['values'] == null) {
-        throw 'Failed to fetch database.';
-      }
-
-      final List values = message['values'] as List;
-      for (final value in values) {
-        final valueList = List<String>.from(value as List);
-        result.add(
-          Team(
-            valueList[0],
-            valueList[1],
-            int.parse(valueList[2]),
-            int.parse(valueList[3]),
-            valueList[4],
-            valueList[5],
-            valueList.sublist(6).map((e) {
-              final List<String> splitted = e.split(':');
-              return (splitted[0], splitted[1]);
-            }).toList(),
-          ),
-        );
-      }
-    } catch (e) {
-      debugPrint(e.toString()); // エラーはログに出力して握りつぶす
-    }
-    return result;
+    return List.generate(
+      teams.length,
+      (index) => Team(
+        teams[index][0],
+        teams[index][1],
+        int.parse(teams[index][2]),
+        int.parse(teams[index][3]),
+        teams[index][4],
+        teams[index][5],
+        teams[index].sublist(6).map((e) {
+          final List<String> splitted = e.split(':');
+          return (splitted[0], splitted[1]);
+        }).toList(),
+      ),
+    );
   }
 }
