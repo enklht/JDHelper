@@ -104,14 +104,14 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       _allYears.sort();
 
       _allMemberNums = _allItemList
-          .map((e) => e.memberNum!)
+          .map((e) => e.memberNum)
           .whereType<int>()
           .toSet()
           .toList();
       _allMemberNums.sort();
 
       _allKinds =
-          _allItemList.map((e) => e.kind!).whereType<String>().toSet().toList();
+          _allItemList.map((e) => e.kind).whereType<String>().toSet().toList();
     });
   }
 
@@ -234,7 +234,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          team.kind != null ? "${team.kind}年度" : "種類不明",
+          team.kind != null ? team.kind.toString() : "種類不明",
           overflow: TextOverflow.ellipsis,
         ),
       ],

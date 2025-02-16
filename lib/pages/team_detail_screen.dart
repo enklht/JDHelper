@@ -13,6 +13,7 @@ class TeamDetail extends StatelessWidget {
       ),
       body: Center(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
           child: SizedBox(
             width: double.infinity,
             child: Column(
