@@ -17,22 +17,25 @@ class TeamRepository {
   Future<List<Team>> getTeamsFromApi() async {
     await init();
 
-    final teams = await _teamsheet!.values.allRows();
+    final teams = await _teamsheet!.values.allRows(fromRow: 2);
 
     return List.generate(
       teams.length,
       (index) => Team(
-        teams[index][0],
-        teams[index][1],
-        int.parse(teams[index][2]),
-        int.parse(teams[index][3]),
-        teams[index][4],
-        teams[index][5],
-        teams[index].sublist(6).map((e) {
-          final List<String> splitted = e.split(':');
+        teams[index].elementAtOrNull(0) ?? "",
+        teams[index].elementAtOrNull(index) ?? "",
+        int.tryParse(teams[index][2]) ?? 0,
+        int.tryParse(teams[index][3]) ?? 0,
+        teams[index].elementAtOrNull(4) ?? "",
+        teams[index].elementAtOrNull(5) ?? "",
+        (teams[index].elementAtOrNull(6) ?? "")
+            .split(",")
+            .where((e) => e.isNotEmpty)
+            .map((e) {
+          final List<String> splitted = e.split(":");
           return (splitted[0], splitted[1]);
         }).toList(),
       ),
-    );
+    ).reversed.toList();
   }
 }
