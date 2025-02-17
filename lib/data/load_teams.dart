@@ -1,8 +1,9 @@
 import 'package:gsheets/gsheets.dart';
+import 'package:street_performance_helper/env/env.dart';
 import 'package:street_performance_helper/models/team.dart';
 
-const _cresidentials = String.fromEnvironment("cresidential");
-const _spreadsheetId = String.fromEnvironment("spreadsheetId");
+final String _cresidentials = Env.cresidential;
+final String _spreadsheetId = Env.spreadsheetId;
 
 class TeamRepository {
   final _gsheets = GSheets(_cresidentials);
