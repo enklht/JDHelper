@@ -37,7 +37,7 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build web --base-href /${{ steps.version.outputs.repository }}/ --dart-define-from-file=.env
+      - run: flutter build web --base-href /${{ steps.version.outputs.repository }}/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
