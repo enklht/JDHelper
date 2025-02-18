@@ -4,7 +4,7 @@ class Team {
   int? year;
   int? memberNum;
   String? kind;
-  String? youtubeLink;
+  String? youtubeId;
   List<(String, String)>? program;
   String? theme;
   String? characters;
@@ -16,7 +16,7 @@ class Team {
     this.year,
     this.memberNum,
     this.kind,
-    this.youtubeLink,
+    this.youtubeId,
     this.program,
     this.theme,
     this.characters,
