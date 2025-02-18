@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:street_performance_helper/pages/team_search_screen.dart";
+import "package:street_performance_helper/pages/trick_search_screen.dart";
 
 class TitleScreen extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class TitleScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _linkButton(context, "チーム検索", const TeamSearchScreen()),
-            // _createLinkButton(context, "技検索", null),
+            _linkButton(context, "技検索", const TrickSearchScreen()),
           ],
         ),
       ),

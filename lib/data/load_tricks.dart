@@ -15,7 +15,7 @@ class TrickRepository {
     _teamsheet = _spreadsheet.worksheetByTitle("tricks");
   }
 
-  Future<List<Trick>> getTeamsFromApi() async {
+  Future<List<Trick>> getTricksFromApi() async {
     await init();
 
     final tricks = await _teamsheet!.values.allRows(fromRow: 2);
