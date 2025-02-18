@@ -57,52 +57,70 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     );
   }
 
-  void _runFilter({String? inputKeyword}) {
-    final String input = inputKeyword ?? _inputKeyword;
-    List<Trick> results = _allItemList
-        .where(
-          (e) => _selectedProps.isEmpty || _selectedProps.contains(e.prop),
-        )
-        .where(
-          (e) =>
-              _selectedTags.isEmpty ||
-              _selectedTags.intersection(e.tags.toSet()).isNotEmpty,
-        )
-        // .where(
-        //   (e) => _selectedKinds.isEmpty || _selectedKinds.contains(e.kind),
-        // )
-        .toList();
-    if (input.isNotEmpty) {
-      results = extractAllSorted(
-        query: input,
-        choices: results,
-        cutoff: 50,
-        getter: (e) => e.name,
-      ).map((e) => e.choice).toList();
-    }
-    setState(() {
-      _inputKeyword = input;
-      _displayItemList = results;
-    });
+  Widget _searchBar(BuildContext context, double uiWidth, double uiHeight) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: uiWidth * 0.1,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (inputKeyword) =>
+                  _runFilter(inputKeyword: inputKeyword),
+              decoration: const InputDecoration(
+                labelText: "検索",
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: _showModal,
+          ),
+        ],
+      ),
+    );
   }
 
-  Future<void> _fetchData() async {
-    final List<Trick> fetchedList = await TrickRepository().getTricksFromApi();
-    setState(() {
-      _isLoading = false;
-      _allItemList = fetchedList;
-      _displayItemList = fetchedList;
+  Widget _teamSubtitle(BuildContext context, Trick trick) {
+    return Row(
+      spacing: 10,
+      children: [
+        Text(
+          trick.prop,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
 
-      _selectedProps = {};
-      _selectedTags = {};
-
-      _allProps = _allItemList.map((e) => e.prop).toSet().toList();
-      _allTags = _allItemList
-          .fold([], (p, e) => p..addAll(e.tags))
-          .whereType<String>()
-          .toSet()
-          .toList();
-    });
+  Widget _teamList(BuildContext context, double uiWidth, double uiHeight) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _displayItemList.length,
+        itemBuilder: (context, index) {
+          final Trick trick = _displayItemList[index];
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: uiWidth * 0.1),
+            child: Card(
+              child: ListTile(
+                title: Text(trick.name, overflow: TextOverflow.ellipsis),
+                subtitle: _teamSubtitle(context, trick),
+                onTap: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TrickDetail(trick: trick),
+                    ),
+                  ),
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   List<Widget> _createFilter(
@@ -143,6 +161,51 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     ];
   }
 
+  void _runFilter({String? inputKeyword}) {
+    final String input = inputKeyword ?? _inputKeyword;
+    List<Trick> results = _allItemList
+        .where(
+          (e) => _selectedProps.isEmpty || _selectedProps.contains(e.prop),
+        )
+        .where(
+          (e) =>
+              _selectedTags.isEmpty ||
+              _selectedTags.intersection(e.tags.toSet()).isNotEmpty,
+        )
+        .toList();
+    if (input.isNotEmpty) {
+      results = extractAllSorted(
+        query: input,
+        choices: results,
+        cutoff: 50,
+        getter: (e) => e.name,
+      ).map((e) => e.choice).toList();
+    }
+    setState(() {
+      _inputKeyword = input;
+      _displayItemList = results;
+    });
+  }
+
+  Future<void> _fetchData() async {
+    final List<Trick> fetchedList = await TrickRepository().getTricksFromApi();
+    setState(() {
+      _isLoading = false;
+      _allItemList = fetchedList;
+      _displayItemList = fetchedList;
+
+      _selectedProps = {};
+      _selectedTags = {};
+
+      _allProps = _allItemList.map((e) => e.prop).toSet().toList();
+      _allTags = _allItemList
+          .fold([], (p, e) => p..addAll(e.tags))
+          .whereType<String>()
+          .toSet()
+          .toList();
+    });
+  }
+
   void _showModal() {
     showModalBottomSheet(
       context: context,
@@ -175,80 +238,6 @@ class _TrickSearchState extends State<TrickSearchScreen> {
           },
         );
       },
-    );
-  }
-
-  Widget _searchBar(BuildContext context, double uiWidth, double uiHeight) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: uiWidth * 0.1,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              onChanged: (inputKeyword) =>
-                  _runFilter(inputKeyword: inputKeyword),
-              decoration: const InputDecoration(
-                labelText: "検索",
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showModal,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _teamSubtitle(BuildContext context, Trick trick) {
-    return Row(
-      spacing: 10,
-      children: [
-        Text(
-          trick.prop,
-          overflow: TextOverflow.ellipsis,
-        ),
-        // Text(
-        //   trick.memberNum != null ? "${trick.memberNum}人" : "人数不明",
-        //   overflow: TextOverflow.ellipsis,
-        // ),
-        // Text(
-        //   trick.kind != null ? trick.kind.toString() : "種類不明",
-        //   overflow: TextOverflow.ellipsis,
-        // ),
-      ],
-    );
-  }
-
-  Widget _teamList(BuildContext context, double uiWidth, double uiHeight) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: _displayItemList.length,
-        itemBuilder: (context, index) {
-          final Trick trick = _displayItemList[index];
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: uiWidth * 0.1),
-            child: Card(
-              child: ListTile(
-                title: Text(trick.name, overflow: TextOverflow.ellipsis),
-                subtitle: _teamSubtitle(context, trick),
-                onTap: () => {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => TrickDetail(trick: trick),
-                    ),
-                  ),
-                },
-              ),
-            ),
-          );
-        },
-      ),
     );
   }
 }
