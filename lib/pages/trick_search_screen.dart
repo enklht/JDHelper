@@ -18,9 +18,9 @@ class _TrickSearchState extends State<TrickSearchScreen> {
   String _inputKeyword = "";
 
   late final List<String> _allProps;
-  late final List<String> _allTags;
+  List<String> _allTags = [];
 
-  late Set<String> _selectedProps;
+  String? _selectedProp;
   late Set<String> _selectedTags;
 
   @override
@@ -57,27 +57,61 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     );
   }
 
-  Widget _searchBar(BuildContext context, double uiWidth, double uiHeight) {
+  Widget _searchBar(
+    BuildContext context,
+    double uiWidth,
+    double uiHeight,
+  ) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10,
         horizontal: uiWidth * 0.1,
       ),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: TextField(
-              onChanged: (inputKeyword) =>
-                  _runFilter(inputKeyword: inputKeyword),
-              decoration: const InputDecoration(
-                labelText: "検索",
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
+          DropdownButtonFormField(
+            value: _selectedProp,
+            items: _isLoading
+                ? []
+                : _allProps
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e, overflow: TextOverflow.ellipsis),
+                      ),
+                    )
+                    .toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedProp = value.toString();
+                _allTags = _allItemList
+                    .where((e) => e.prop == value)
+                    .map((e) => e.tags)
+                    .fold(<String>[], (p, e) => p..addAll(e))
+                    .toSet()
+                    .toList();
+                _selectedTags = {};
+              });
+              _runFilter();
+            },
           ),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showModal,
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  onChanged: (inputKeyword) =>
+                      _runFilter(inputKeyword: inputKeyword),
+                  decoration: const InputDecoration(
+                    labelText: "検索",
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.filter_list),
+                onPressed: _showModal,
+              ),
+            ],
           ),
         ],
       ),
@@ -165,7 +199,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     final String input = inputKeyword ?? _inputKeyword;
     List<Trick> results = _allItemList
         .where(
-          (e) => _selectedProps.isEmpty || _selectedProps.contains(e.prop),
+          (e) => _selectedProp != null && _selectedProp == e.prop,
         )
         .where(
           (e) =>
@@ -192,17 +226,12 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     setState(() {
       _isLoading = false;
       _allItemList = fetchedList;
-      _displayItemList = fetchedList;
-
-      _selectedProps = {};
-      _selectedTags = {};
+      _displayItemList = [];
 
       _allProps = _allItemList.map((e) => e.prop).toSet().toList();
-      _allTags = _allItemList
-          .fold([], (p, e) => p..addAll(e.tags))
-          .whereType<String>()
-          .toSet()
-          .toList();
+
+      _allTags = [];
+      _selectedTags = {};
     });
   }
 
@@ -219,12 +248,6 @@ class _TrickSearchState extends State<TrickSearchScreen> {
                 child: Column(
                   spacing: 10,
                   children: [
-                    _createFilter(
-                      "道具",
-                      _allProps,
-                      _selectedProps,
-                      setState,
-                    ),
                     _createFilter(
                       "タグ",
                       _allTags,
