@@ -214,7 +214,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
-            onPressed: _showModal,
+            onPressed: _isLoading ? null : _showModal,
           ),
         ],
       ),

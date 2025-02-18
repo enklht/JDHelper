@@ -18,7 +18,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
   String _inputKeyword = "";
 
   late final List<String> _allProps;
-  List<String> _allTags = [];
+  late List<String> _allTags;
 
   String? _selectedProp;
   late Set<String> _selectedTags;
@@ -109,7 +109,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
               ),
               IconButton(
                 icon: const Icon(Icons.filter_list),
-                onPressed: _showModal,
+                onPressed: _isLoading ? null : _showModal,
               ),
             ],
           ),
