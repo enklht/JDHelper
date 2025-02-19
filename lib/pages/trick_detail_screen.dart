@@ -35,6 +35,7 @@ class TrickDetail extends StatelessWidget {
   Widget _dataTable(BuildContext context) {
     return DataTable(
       headingRowHeight: 0,
+      dataRowMaxHeight: double.infinity,
       columns: const [
         DataColumn(label: Text("属性")),
         DataColumn(label: Text("値")),
@@ -55,7 +56,16 @@ class TrickDetail extends StatelessWidget {
         DataRow(
           cells: [
             const DataCell(Text("タグ")),
-            DataCell(Text(trick.tags.toString())),
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 5,
+                  children: trick.tags.map((e) => Text(e)).toList(),
+                ),
+              ),
+            ),
           ],
         ),
       ],
