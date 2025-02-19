@@ -76,6 +76,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
       child: Column(
         children: [
           DropdownButtonFormField(
+            hint: const Text("道具を選択"),
             value: _selectedProp,
             items: _allProps
                 .map(
@@ -112,7 +113,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
                   onChanged: (inputKeyword) =>
                       _runFilter(inputKeyword: inputKeyword),
                   decoration: const InputDecoration(
-                    labelText: "検索",
+                    labelText: "技名で絞り込み",
                     prefixIcon: Icon(Icons.search),
                   ),
                 ),
