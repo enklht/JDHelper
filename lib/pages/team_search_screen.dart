@@ -79,7 +79,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
         query: input,
         choices: results,
         cutoff: 50,
-        getter: (e) => "${e.name}            ${e.pronounciation}",
+        getter: (e) => "${e.name}            ${e.pronunciation}",
       ).map((e) => e.choice).toList();
     }
     setState(() {
@@ -89,7 +89,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
   }
 
   Future<void> _fetchData() async {
-    final List<Team> fetchedList = await TeamRepository().getTeamsFromApi();
+    final fetchedList = await TeamRepository().getAllTeams();
     setState(() {
       _isLoading = false;
       _allItemList = fetchedList;
