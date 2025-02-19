@@ -38,11 +38,11 @@ class Team {
       pronunciation: data["pronunciation"].toString(),
       year: int.tryParse(data["year"].toString()),
       memberNum: int.tryParse(data["memberNum"].toString()),
-      kind: data["kind"].toString(),
-      theme: data["theme"].toString(),
-      characters: data["characters"].toString(),
-      note: data["note"].toString(),
-      youtubeId: data["youtubeId"].toString(),
+      kind: data["kind"]?.toString(),
+      theme: data["theme"]?.toString(),
+      characters: data["characters"]?.toString(),
+      note: data["note"]?.toString(),
+      youtubeId: data["youtubeId"]?.toString(),
       program: data["program"] is Iterable
           ? (data["program"] as Iterable).map((e) {
               return {
@@ -59,8 +59,6 @@ class Team {
       "id": id,
       "name": name,
       "pronunciation": pronunciation,
-      if (year != null) "year": year,
-      if (memberNum != null) "memberNum": memberNum,
     };
   }
 }
