@@ -12,22 +12,28 @@ class TrickSearchScreen extends StatefulWidget {
 }
 
 class _TrickSearchState extends State<TrickSearchScreen> {
-  bool _isLoading = true;
-  late final List<Trick> _allItemList;
-  late List<Trick> _displayItemList;
+  bool _isLoading = false;
+  late List<Trick> _allItemList;
+  List<Trick> _displayItemList = [];
   String _inputKeyword = "";
 
-  late final List<String> _allProps;
-  late List<String> _allTags;
+  late final List<String> _allProps = [
+    "ボール",
+    "リング",
+    "クラブ",
+    "シェイカーカップ",
+    "シガーボックス",
+    "デビルスティック",
+    "ディアボロ",
+    "ペアボール",
+    "リングパッシング",
+    "クラブパッシング",
+  ];
+
+  late List<String> _allTags = [];
 
   String? _selectedProp;
-  late Set<String> _selectedTags;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
-  }
+  late Set<String> _selectedTags = {};
 
   @override
   Widget build(BuildContext context) {
@@ -71,18 +77,22 @@ class _TrickSearchState extends State<TrickSearchScreen> {
         children: [
           DropdownButtonFormField(
             value: _selectedProp,
-            items: _isLoading
-                ? []
-                : _allProps
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e, overflow: TextOverflow.ellipsis),
-                      ),
-                    )
-                    .toList(),
-            onChanged: (value) {
+            items: _allProps
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e, overflow: TextOverflow.ellipsis),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) async {
               setState(() {
+                _isLoading = true;
+              });
+              _allItemList =
+                  await TrickRepository().getTricksByProp(value.toString());
+              setState(() {
+                _isLoading = false;
                 _selectedProp = value.toString();
                 _allTags = _allItemList
                     .where((e) => e.prop == value)
@@ -199,7 +209,7 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     final String input = inputKeyword ?? _inputKeyword;
     List<Trick> results = _allItemList
         .where(
-          (e) => _selectedProp != null && _selectedProp == e.prop,
+          (e) => _selectedProp == e.prop,
         )
         .where(
           (e) =>
@@ -218,20 +228,6 @@ class _TrickSearchState extends State<TrickSearchScreen> {
     setState(() {
       _inputKeyword = input;
       _displayItemList = results;
-    });
-  }
-
-  Future<void> _fetchData() async {
-    final List<Trick> fetchedList = await TrickRepository().getTricksFromApi();
-    setState(() {
-      _isLoading = false;
-      _allItemList = fetchedList;
-      _displayItemList = [];
-
-      _allProps = _allItemList.map((e) => e.prop).toSet().toList();
-
-      _allTags = [];
-      _selectedTags = {};
     });
   }
 

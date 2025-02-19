@@ -86,8 +86,8 @@ class TrickDetail extends StatelessWidget {
           .map(
             (e) => DataRow(
               cells: [
-                DataCell(Text(e.$1)),
-                DataCell(Text(e.$2)),
+                DataCell(Text(e["team"]!)),
+                DataCell(Text(e["part"]!)),
               ],
             ),
           )
