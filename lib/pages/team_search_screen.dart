@@ -229,7 +229,7 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       spacing: 10,
       children: [
         Text(
-          team.year != null ? "${team.year}年度" : "年度不明",
+          "${team.year}年度",
           overflow: TextOverflow.ellipsis,
         ),
         Text(

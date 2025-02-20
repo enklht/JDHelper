@@ -49,7 +49,7 @@ class TeamDetail extends StatelessWidget {
         DataRow(
           cells: [
             const DataCell(Text("年度")),
-            DataCell(Text(team.year?.toString() ?? "不明")),
+            DataCell(Text(team.year.toString())),
           ],
         ),
         DataRow(
