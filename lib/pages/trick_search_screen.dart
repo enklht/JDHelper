@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:fuzzywuzzy/fuzzywuzzy.dart";
-import "package:street_performance_helper/data/load_tricks.dart";
-import "package:street_performance_helper/models/trick.dart";
-import "package:street_performance_helper/pages/trick_detail_screen.dart";
+import "package:jdhelper/data/load_tricks.dart";
+import "package:jdhelper/models/trick.dart";
+import "package:jdhelper/pages/trick_detail_screen.dart";
 
 class TrickSearchScreen extends StatefulWidget {
   const TrickSearchScreen({super.key});

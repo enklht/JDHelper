@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:street_performance_helper/models/team.dart';
+import 'package:jdhelper/models/team.dart';
 
 class TeamRepository {
   Future<List<Team>> getAllTeams() async {

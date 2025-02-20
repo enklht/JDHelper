@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:fuzzywuzzy/fuzzywuzzy.dart";
-import "package:street_performance_helper/data/load_teams.dart";
-import "package:street_performance_helper/models/team.dart";
-import "package:street_performance_helper/pages/team_detail_screen.dart";
+import "package:jdhelper/data/load_teams.dart";
+import "package:jdhelper/models/team.dart";
+import "package:jdhelper/pages/team_detail_screen.dart";
 
 class TeamSearchScreen extends StatefulWidget {
   const TeamSearchScreen({super.key});

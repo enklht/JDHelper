@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:street_performance_helper/models/team.dart";
+import "package:jdhelper/models/team.dart";
 
 class TeamDetail extends StatelessWidget {
   const TeamDetail({required this.team});

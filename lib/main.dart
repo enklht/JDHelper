@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import "package:google_fonts/google_fonts.dart";
-import 'package:street_performance_helper/firebase_options.dart';
-import 'package:street_performance_helper/pages/title_screen.dart';
+import 'package:jdhelper/firebase_options.dart';
+import 'package:jdhelper/pages/title_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

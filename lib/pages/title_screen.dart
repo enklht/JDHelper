@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:street_performance_helper/pages/team_search_screen.dart";
-import "package:street_performance_helper/pages/trick_search_screen.dart";
+import "package:jdhelper/pages/team_search_screen.dart";
+import "package:jdhelper/pages/trick_search_screen.dart";
 
 class TitleScreen extends StatelessWidget {
   @override

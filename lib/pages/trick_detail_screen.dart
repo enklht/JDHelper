@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:street_performance_helper/models/trick.dart";
+import "package:jdhelper/models/trick.dart";
 
 class TrickDetail extends StatelessWidget {
   const TrickDetail({required this.trick});

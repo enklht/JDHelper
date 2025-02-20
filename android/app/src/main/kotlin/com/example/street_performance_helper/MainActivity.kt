@@ -1,4 +1,4 @@
-package com.example.street_performance_helper
+package com.example.jdhelper
 
 import io.flutter.embedding.android.FlutterActivity
 

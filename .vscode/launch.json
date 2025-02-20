@@ -5,20 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "street_performance_helper",
+      "name": "jdhelper",
       "request": "launch",
       "type": "dart",
       "args": ["--dart-define-from-file=.env"]
     },
     {
-      "name": "street_performance_helper (profile mode)",
+      "name": "jdhelper (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
       "args": ["--dart-define-from-file=.env"]
     },
     {
-      "name": "street_performance_helper (release mode)",
+      "name": "jdhelper (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",

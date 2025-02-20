@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:street_performance_helper/models/trick.dart';
+import 'package:jdhelper/models/trick.dart';
 
 class TrickRepository {
   Future<List<Trick>> getAllTricks() async {
