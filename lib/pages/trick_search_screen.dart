@@ -100,7 +100,8 @@ class _TrickSearchState extends State<TrickSearchScreen> {
                     .map((e) => e.tags)
                     .fold(<String>[], (p, e) => p..addAll(e))
                     .toSet()
-                    .toList();
+                    .toList()
+                  ..sort();
                 _selectedTags = {};
               });
               _runFilter();
