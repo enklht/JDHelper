@@ -99,16 +99,19 @@ class _TeamSearchState extends State<TeamSearchScreen> {
       _selectedYears = {};
       _selectedKinds = {};
 
-      _allYears =
-          _allItemList.map((e) => e.year).whereType<int>().toSet().toList();
-      _allYears.sort();
+      _allYears = _allItemList
+          .map((e) => e.year)
+          .whereType<int>()
+          .toSet()
+          .toList()
+        ..sort();
 
       _allMemberNums = _allItemList
           .map((e) => e.memberNum)
           .whereType<int>()
           .toSet()
-          .toList();
-      _allMemberNums.sort();
+          .toList()
+        ..sort();
 
       _allKinds =
           _allItemList.map((e) => e.kind).whereType<String>().toSet().toList();
