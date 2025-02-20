@@ -4,7 +4,7 @@ class Team {
   String id;
   String name;
   String pronunciation;
-  int? year;
+  int year;
   int? memberNum;
   String? kind;
   String? theme;
@@ -17,7 +17,7 @@ class Team {
     required this.id,
     required this.name,
     required this.pronunciation,
-    this.year,
+    required this.year,
     this.memberNum,
     this.kind,
     this.theme,
@@ -36,7 +36,7 @@ class Team {
       id: data["id"].toString(),
       name: data["name"].toString(),
       pronunciation: data["pronunciation"].toString(),
-      year: int.tryParse(data["year"].toString()),
+      year: int.parse(data["year"].toString()),
       memberNum: int.tryParse(data["memberNum"].toString()),
       kind: data["kind"]?.toString(),
       theme: data["theme"]?.toString(),

@@ -9,10 +9,15 @@ class TeamRepository {
           toFirestore: (e, _) => e.toFirestore(),
         );
     final docSnap = await ref.get();
-    return docSnap.docs.map((e) => e.data()).toList();
+    return docSnap.docs.map((e) => e.data()).toList()
+      ..sort(
+        (a, b) {
+          final int cmp = b.year.compareTo(a.year);
+          if (cmp == 0) {
+            return a.pronunciation.compareTo(b.pronunciation);
+          }
+          return cmp;
+        },
+      );
   }
-
-  // Future<List<Team>> getTeamById() async {
-  //   final db =
-  // }
 }
